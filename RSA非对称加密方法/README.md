@@ -97,7 +97,8 @@ python tool.py
 发送给用户的数据应该形如`设备ID:随机6位激活码:签名结果`
 #### 插件说明
 我开发了AstroBox的插件部分，由于安卓开发从来没玩过，放弃软件方式。而且软件需要两边签名相同，所以无法做到通用。
-[插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，目前AstroBox插件仓库尚未通过我的pr，所以你需要前往release页面下载最新版的abp后缀的文件。将abp拖入AstroBox即可使用插件。
+
+[插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，现在可以前往AstroBox的插件市场下载插件『Vela快应用验证』，即可使用插件。
 
 ![插件截图](/image/VelaVerify-Plugin-interface.png)
 
