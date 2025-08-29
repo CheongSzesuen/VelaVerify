@@ -1,4 +1,4 @@
-# RSA非对称加密方法。
+# RSA非对称加密方法
 #### 作者：OrPudding & WaiJade
 ## 原理
 利用RSA**非对称加密**方法，只在手环上保存可以自由分享的公钥，用户返回设备唯一ID后由开发者使用工具签名数据，并由AstroBox插件使用interconnect发送签名后的数据，手环接收到数据再使用密码接口验证签名。一次验证成功后，后面的验证都会从文件中获取上一次接收到的**原始数据**，然后重新验证。不存储验证状态，保证安全。
@@ -17,7 +17,10 @@ setTimeout(() => {
 }, 0)
 //这个0是延迟跳转时间，单位毫秒。默认为0毫秒。实际效果是验证要花不到一秒，所以建议设置为0毫秒。
 ```
-4.在manifest.json中要加入权限
+4.配置项目
+
+1）在`src/manifest.json`中添加页面和功能声明
+
 ```json
 "features": [
     {"name": "system.router"}
@@ -26,15 +29,15 @@ setTimeout(() => {
     {"name": "system.device"},
     {"name": "system.crypto"},
     {"name": "system.interconnect"},
-    {"name": "system.app"}
+    {"name": "system.app"} 
 ],
 
 ```
-加入此页面
+2）加入此页面
 ```json
 "pages/verify":{"component": "verify"},
 ```
-权限声明
+3）权限声明
 ```json
 "permissions": [{"name": "hapjs.permission.DEVICE_INFO"}]
 ```
@@ -49,10 +52,14 @@ setTimeout(() => {
 - Aiot IDE在调试的时候如果`app.ux`已经替换会导致资源占用严重，不知道问题是什么，但是建议在调试的时候把`app.ux`文件恢复到原始内容。发版的时候别忘了替换回来。
 - 不直接在页面写interconnect的接口是因为页面有这个接口会导致IDE调试白屏，但是在实机中是正常的。如果你觉得直接写入验证页面比较好，可以不用替换`app.ux`。
 #### 页面适配
-目前只适配了矩形屏和胶囊屏
+适配了圆屏、胶囊屏和矩形屏。
+![多屏适配图片](/image/multi-screens.png)
+> 实际使用可以将打开详情部分以及后面的部分删掉，不影响。
+#### `verify.ux`相关
+由于便于在没有唯一ID的设备调试，内部有自动回退的部分，在无法获取到ID的时候会用模拟器的固定ID，在应用的时候应该删去退回部分。
 #### 公私钥生成工具
 ##### 使用 OpenSSL 命令行生成 RSA 密钥对(比较麻烦)
-~~古董派这一块~~
+~~传统派这一块~~
 ```bash
 # AI太好用了你知道吗
 ```
@@ -100,7 +107,7 @@ python tool.py
 
 [插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，现在可以前往AstroBox的插件市场下载插件『Vela快应用验证』，即可使用插件。
 
-![插件截图](/image/VelaVerify-Plugin-interface.png)
+![插件界面截图](/image/VelaVerify-Plugin-interface.png)
 
 此插件为通用插件，使用时需要在第一行写入你的快应用包名，第二行粘贴数据。
 

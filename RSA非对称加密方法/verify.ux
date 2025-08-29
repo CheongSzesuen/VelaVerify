@@ -118,7 +118,7 @@
       this.checkDataFile()
 
       // 更新连接状态
-      this.connectionStatus = "连接中..."
+      this.connectionStatus = "等待连接"
 
       // ****** 从 $app.$def 获取 connect 实例 ******
       const connect = this.$app.$def.connectInstance;
@@ -405,19 +405,18 @@
 .status-text {
   font-size: 28px;
 }
-.status-text.active-status {
+/* .status-text.active-status {
   color: #4caf50;
 }
 
 .status-text.inactive-status {
   color: #f44336;
-}
+} */
 
 /* 内容区域 - 纵向排列 */
 .content-column {
   flex-direction: column;
   align-items: center;
-  /* padding: 20px 0; */
   width: 100%;
 }
 
@@ -545,19 +544,42 @@
 /* 多屏适配 */
 @media (shape: circle) {
   .header {
-    padding-top: 20%;
+    padding-top: 18%;
   }
-  .status-item,
+  
+.title-text {
+  font-size: 32px;
+  color: #fff;
+  text-align: center;
+}
+.status-text {
+  font-size: 31px;
+}
+
   .data-item,
-  .button-column,
   .qrcode-content,
   .data-source {
     width: 100%;
   }
   
+  .status-item{
+    width: 80%;
+  }
   .qrcode {
-    width: 120px;
-    height: 120px;
+    width: 210px;
+    height: 210px;
+  }
+  .qrcode-desc {
+    font-size: 22px;
+  }
+  .button-column{
+    width: 80%;
+  }
+  .btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 30px;
+    height: 65px;
   }
 }
 
@@ -583,6 +605,8 @@
     font-size: 18px;
   }
   .btn {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
     font-size: 22px;
     height: 60px;
   }
