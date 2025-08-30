@@ -1,0 +1,319 @@
+
+<!DOCTYPE html><html lang="zh-CN"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>软件激活中心</title>
+  <script src="https://cdn.rthe.cn/cached-e5a4ec76fb9f8b144895786fa4565ec1-avif/jifeng/cdn.tailwindcss.com/3.4.17.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script src="https://cdn.rthe.cn/cached-2ca03ad87885ab983541092b87adb299-avif/jifeng/crypto-js.min.js"></script>
+
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "修改为自己的clarity id");
+</script>
+  
+  <!-- Tailwind 配置 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3B82F6',
+            success: '#10B981',
+            danger: '#EF4444'
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- 自定义样式 -->
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .step-content {
+        animation: fadeIn 0.3s ease-in-out;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen py-8 px-4">
+  <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md p-6 md:p-8">
+    <!-- 标题区域 -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+        <i class="fa fa-key text-2xl text-primary"></i>
+      </div>
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900">软件激活中心</h1>
+      <p class="text-gray-500 mt-2">卡密验证 → 设备码输入 → 激活码生成</p>
+    </div>
+
+    <!-- 步骤指示器 -->
+    <div class="flex items-center justify-between mb-10">
+      <div class="flex flex-col items-center" id="step1-indicator">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center">1</div>
+        <p class="text-sm mt-2 text-primary">验证卡密</p>
+      </div>
+      <div class="flex-1 mx-4 h-1 bg-gray-200 relative">
+        <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500" id="progress-bar" style="width: 0%"></div>
+      </div>
+      <div class="flex flex-col items-center" id="step2-indicator">
+        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center">2</div>
+        <p class="text-sm mt-2 text-gray-500">输入设备码</p>
+      </div>
+      <div class="flex-1 mx-4 h-1 bg-gray-200 relative">
+        <div class="absolute top-0 left-0 h-full bg-primary transition-all duration-500" id="progress-bar2" style="width: 0%"></div>
+      </div>
+      <div class="flex flex-col items-center" id="step3-indicator">
+        <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center">3</div>
+        <p class="text-sm mt-2 text-gray-500">激活码</p>
+      </div>
+    </div>
+
+    <!-- 步骤1：卡密验证 -->
+    <div id="step1" class="step-content">
+      <h2 class="text-xl font-semibold mb-4">验证卡密</h2>
+      <p class="text-gray-500 mb-6">请输入卡密以获取激活资格</p>
+      <div class="mb-4">
+        <label for="cardCode" class="block text-sm font-medium text-gray-700 mb-1">卡密</label>
+        <input type="password" id="cardCode" placeholder="输入卡密" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+      </div>
+      <button id="verifyCardBtn" class="w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors flex items-center justify-center">
+        <i class="fa fa-lock mr-2"></i> 验证卡密
+      </button>
+      <div id="cardMessage" class="mt-4 text-sm hidden"></div>
+      <div id="verifyLimitHint" class="text-xs text-gray-500 mt-1"></div>
+    </div>
+
+    <!-- 步骤2：输入设备码 -->
+    <div id="step2" class="step-content hidden">
+      <h2 class="text-xl font-semibold mb-4">输入设备码</h2>
+      <p class="text-gray-500 mb-6">请输入软件显示的5位数字设备码（如：12345）</p>
+      <div class="mb-4">
+        <label for="deviceCode" class="block text-sm font-medium text-gray-700 mb-1">设备码（5位数字）</label>
+        <input type="text" id="deviceCode" placeholder="例如：12345" maxlength="5" oninput="this.value = this.value.replace(/[^0-9]/g, '')" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary">
+      </div>
+      <div class="flex gap-3">
+        <button id="backToStep1" class="flex-1 py-2 px-4 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+          返回
+        </button>
+        <button id="generateActivationBtn" class="flex-1 py-2 px-4 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+          生成激活码
+        </button>
+      </div>
+      <div id="deviceMessage" class="mt-4 text-sm hidden"></div>
+    </div>
+
+    <!-- 步骤3：显示激活码 -->
+    <div id="step3" class="step-content hidden">
+      <h2 class="text-xl font-semibold mb-4">激活码已生成</h2>
+      <p class="text-gray-500 mb-6">请将以下激活码输入软件完成激活</p>
+      <div class="bg-gray-50 p-4 rounded-md border border-gray-200 mb-4">
+        <div id="activationCode" class="text-center text-2xl font-mono py-3 bg-white border border-gray-100 rounded-md"></div>
+      </div>
+      
+      <button id="copyActivationCode" class="w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors mb-3">
+        <i class="fa fa-copy mr-1"></i> 复制激活码
+      </button>
+      
+      <button id="restartBtn" class="w-full py-2 px-4 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors">
+        重新开始
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE_URL = '修改为你自己的worker的地址';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      updateVerifyLimitHint();
+
+      // 步骤元素
+      const step1 = document.getElementById('step1');
+      const step2 = document.getElementById('step2');
+      const step3 = document.getElementById('step3');
+      const progressBar = document.getElementById('progress-bar');
+      const progressBar2 = document.getElementById('progress-bar2');
+      const step2Indicator = document.getElementById('step2-indicator');
+      const step3Indicator = document.getElementById('step3-indicator');
+      
+      // 卡密验证通过标记
+      let hasActivation资格 = false;
+
+      // 1. 卡密验证（调用后端API）
+      document.getElementById('verifyCardBtn').addEventListener('click', async function() {
+        const cardCode = document.getElementById('cardCode').value.trim();
+        const cardMessage = document.getElementById('cardMessage');
+        const btn = this;
+
+        if (!cardCode) {
+          showMessage(cardMessage, '请输入卡密', 'error');
+          return;
+        }
+
+        // 按钮加载状态
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i> 验证中...';
+        btn.disabled = true;
+        showMessage(cardMessage, '', ''); // 清空之前的消息
+        
+        try {
+          // 调用后端验证接口，需要和后端中的接口的路径一致。
+			const url = new URL('/verify-card', API_BASE_URL);
+			const response = await fetch(url, {
+			method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ cardCode }) });
+
+          
+
+          // 检查HTTP状态码
+          if (!response.ok) {
+            throw new Error(`服务器响应错误: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          if (result.valid) {
+            showMessage(cardMessage, '验证通过！请输入设备码', 'success');
+            hasActivation资格 = true;
+            setTimeout(switchToStep2, 1000);
+          } else {
+            showMessage(cardMessage, result.message || '验证失败', 'error');
+          }
+        } catch (error) {
+          console.error('验证卡密失败:', error);
+          showMessage(cardMessage, `网络错误: ${error.message}，请重试`, 'error');
+        } finally {
+          // 恢复按钮状态
+          btn.innerHTML = '<i class="fa fa-lock mr-2"></i> 验证卡密';
+          btn.disabled = false;
+        }
+      });
+
+      // 2. 生成激活码（调用后端API）
+      document.getElementById('generateActivationBtn').addEventListener('click', async function() {
+        const deviceCode = document.getElementById('deviceCode').value.trim();
+        const deviceMessage = document.getElementById('deviceMessage');
+        const btn = this;
+
+        if (!hasActivation资格) {
+          showMessage(deviceMessage, '请先完成卡密验证', 'error');
+          return;
+        }
+        if (!deviceCode || deviceCode.length !== 5 || !/^\d{5}$/.test(deviceCode)) {
+          showMessage(deviceMessage, '请输入5位数字设备码', 'error');
+          return;
+        }
+
+        // 按钮加载状态
+        btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> 生成中...';
+        btn.disabled = true;
+        showMessage(deviceMessage, '', '');
+        
+        try {
+          // 调用后端生成激活码接口，需要和后端中的接口的路径一致。
+          const response = await fetch(`${API_BASE_URL}/generate-activation-code`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ deviceCode })
+          });
+
+          // 检查HTTP状态码
+          if (!response.ok) {
+            throw new Error(`服务器响应错误: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          if (result.valid) {
+            // 显示激活码
+            document.getElementById('activationCode').textContent = result.activationCode;
+            switchToStep3();
+          } else {
+            showMessage(deviceMessage, result.message || '生成失败', 'error');
+          }
+        } catch (error) {
+          console.error('生成激活码失败:', error);
+          showMessage(deviceMessage, `网络错误: ${error.message}，请重试`, 'error');
+        } finally {
+          // 恢复按钮状态
+          btn.innerHTML = '生成激活码';
+          btn.disabled = false;
+        }
+      });
+
+      // 3. 复制激活码
+      document.getElementById('copyActivationCode').addEventListener('click', function() {
+        const code = document.getElementById('activationCode').textContent;
+        navigator.clipboard.writeText(code).then(() => {
+          this.innerHTML = '<i class="fa fa-check mr-1"></i> 已复制';
+          setTimeout(() => this.innerHTML = '<i class="fa fa-copy mr-1"></i> 复制激活码', 2000);
+        }).catch(() => {
+          showMessage(document.getElementById('deviceMessage'), '复制失败，请手动复制', 'error');
+        });
+      });
+
+      // 4. 步骤切换与重置
+      document.getElementById('backToStep1').addEventListener('click', () => {
+        step2.classList.add('hidden');
+        step1.classList.remove('hidden');
+        progressBar.style.width = '0%';
+        step2Indicator.querySelector('div').className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center';
+      });
+
+      document.getElementById('restartBtn').addEventListener('click', () => {
+        hasActivation资格 = false;
+        document.getElementById('cardCode').value = '';
+        document.getElementById('deviceCode').value = '';
+        document.getElementById('activationCode').textContent = '';
+        
+        step3.classList.add('hidden');
+        step1.classList.remove('hidden');
+        progressBar.style.width = '0%';
+        progressBar2.style.width = '0%';
+        step2Indicator.querySelector('div').className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center';
+        step3Indicator.querySelector('div').className = 'w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center';
+      });
+
+      // 工具函数：步骤切换
+      function switchToStep2() {
+        step1.classList.add('hidden');
+        step2.classList.remove('hidden');
+        progressBar.style.width = '100%';
+        step2Indicator.querySelector('div').className = 'w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center';
+      }
+
+      function switchToStep3() {
+        step2.classList.add('hidden');
+        step3.classList.remove('hidden');
+        progressBar2.style.width = '100%';
+        step3Indicator.querySelector('div').className = 'w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center';
+      }
+
+      // 工具函数：消息提示
+      function showMessage(element, text, type) {
+        element.textContent = text;
+        element.classList.remove('hidden', 'text-danger', 'text-success');
+        if (text) {
+          element.classList.add('text-' + (type === 'error' ? 'danger' : 'success'));
+          element.classList.remove('hidden');
+        } else {
+          element.classList.add('hidden');
+        }
+      }
+
+      // 工具函数：更新验证次数提示
+      function updateVerifyLimitHint() {
+        const hintElement = document.getElementById('verifyLimitHint');
+        hintElement.textContent = `请妥善使用卡密`;
+      }
+    });
+  </script>
+
+</body></html>

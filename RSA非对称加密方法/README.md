@@ -1,5 +1,5 @@
 # RSA非对称加密方法
-#### 作者：OrPudding & WaiJade
+#### 作者：[OrPudding](https://github.com/OrPudding) & [WaiJade](https://github.com/CheongSzesuen)
 ## 原理
 利用RSA**非对称加密**方法，只在手环上保存可以自由分享的公钥，用户返回设备唯一ID后由开发者使用工具签名数据，并由AstroBox插件使用interconnect发送签名后的数据，手环接收到数据再使用密码接口验证签名。一次验证成功后，后面的验证都会从文件中获取上一次接收到的**原始数据**，然后重新验证。不存储验证状态，保证安全。
 ## 如何使用到你的项目
