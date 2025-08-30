@@ -13,10 +13,6 @@
 <div align="center">
   Vela设备的快应用验证方案集合，欢迎提供更多的验证方案。
 </div>
-<div align="center">
-  <a href="https://github.com/CheongSzesuen/VelaVerify/stargazers"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/davidhdev/vue-bits"></a>
-  <a href="https://github.com/CheongSzesuen/VelaVerify/blob/main/LICENSE.md"><img alt="License" src="https://img.shields.io/badge/License-GPL-3.0_Clause-green"></a>
-</div>
 
 ## 方案目录
 - [RSA非对称加密方法](/RSA非对称加密方法) (OrPudding & WaiJade)
