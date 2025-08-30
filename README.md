@@ -2,7 +2,7 @@
 	<br>
 	<br>
     <picture>
-      <source media="(prefers-color-scheme: light)" srcset="/images/logos/gh-black.svg">
+      <source media="(prefers-color-scheme: light)" srcset="/image/logos/gh-black.svg">
       <source media="(prefers-color-scheme: dark)" srcset="/image/logos/gh-white.svg">
       <img src="/images/logo/gh-black.svg" alt="vela verify" width="1000">
     </picture>
