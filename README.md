@@ -33,4 +33,4 @@
 ![Alt](https://repobeats.axiom.co/api/embed/62218e68abe9307a95fff6cf7e05cffb24c65ed9.svg "Repobeats analytics image")
 
 ## 许可证
-基于GPL-3.0，但使用时要遵守具体方案请文件夹内的`README.md`声明的使用限制。
+仓库内容基于GPL-3.0，但方案的许可证要看对应的`README.md`中的许可证。
