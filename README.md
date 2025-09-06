@@ -4,7 +4,7 @@
     <picture>
       <source media="(prefers-color-scheme: light)" srcset="/image/logos/gh-light.svg">
       <source media="(prefers-color-scheme: dark)" srcset="/image/logos/gh-dark.svg">
-      <img src="/images/logo/gh-black.svg" alt="vela verify" width="1000">
+      <img src="/images/logo/gh-light.svg" alt="vela verify" width="1000">
     </picture>
 	<br>
 	<br>
