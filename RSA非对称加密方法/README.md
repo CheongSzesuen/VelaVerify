@@ -1,3 +1,4 @@
+# 此文档已经过期（2025.9.14），我会于下周末更新文档。
 # RSA非对称加密方法
 #### 作者：[OrPudding](https://github.com/OrPudding) & [WaiJade](https://github.com/CheongSzesuen)
 ## 原理
