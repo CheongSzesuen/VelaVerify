@@ -21,8 +21,8 @@
 
       // 设置全局的消息接收回调
       // 注意：这里的 this 指向 $app 对象
-      connect.onmessage = (data) => {
-        console.log("Global onmessage received:", data);
+      // connect.onmessage = (data) => {
+      //   console.log("Global onmessage received:", data);
         // 可以在这里做一些全局处理，比如更新全局状态、发送事件等
         // 但具体页面逻辑最好还是在页面内处理
         // 例如，可以广播一个事件通知所有页面
@@ -35,7 +35,7 @@
 
         // 示例：全局显示提示
         // showToast({ message: "App: 接收到新数据", duration: 500 })
-      };
+      // };
 
       // 设置全局的连接打开回调
       connect.onopen = (data) => {

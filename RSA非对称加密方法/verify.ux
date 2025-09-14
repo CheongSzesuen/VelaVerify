@@ -97,8 +97,8 @@
       fileStatus: "未检测",
       verificationStatus: "未验证",
       isDefaultDeviceId: false,
-      dataSource: "", // 新增：数据来源提示
-      showDetail: false, // 控制详情显示
+      dataSource: "", 
+      showDetail: false,
 
       // 数据文件路径
       dataFilePath: "internal://files/activation_data.txt",
@@ -309,22 +309,22 @@
       const parts = this.latestData.split(':')
       if (parts.length !== 3) {
         this.verificationStatus = "数据格式错误"
-        showToast({ message: "数据格式应为 设备ID:激活码:签名", duration: 500 })
-        this.$update()
+        showToast({ message: "数据格式应为 设备ID:激活码:签名:包名", duration: 500 })
+        
         return
       }
 
-      const [dataDeviceId, activationCode, signature] = parts
+      const dataDeviceId = parts[0]
+      const activationCode = parts[1]
+      const signature = parts[2]
 
-      // 验证设备ID
       if (dataDeviceId !== this.deviceId) {
         this.verificationStatus = "设备ID不匹配"
         showToast({ message: "设备ID不匹配", duration: 500 })
-        this.$update()
+        
         return
       }
 
-      // 验证签名
       const dataToVerify = `${dataDeviceId}:${activationCode}`
       crypto.verify({
         data: dataToVerify,
@@ -335,8 +335,6 @@
           if (isValid) {
             this.verificationStatus = "验证通过"
             showToast({ message: "签名验证成功", duration: 500 })
-
-            // 验证通过后自动跳转到index页面
             setTimeout(() => {
               router.replace({ uri: '/pages/index' })
             }, 0)
@@ -344,12 +342,10 @@
             this.verificationStatus = "签名不合法"
             showToast({ message: "签名验证失败", duration: 500 })
           }
-          this.$update()
         },
         fail: (err) => {
           this.verificationStatus = "验证失败"
           showToast({ message: `验证出错: ${err.code || '未知错误'}`, duration: 500 })
-          this.$update()
         }
       })
     },
