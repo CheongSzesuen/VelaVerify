@@ -309,7 +309,7 @@ python tool.py
 #### 插件说明
 我开发了AstroBox的插件部分，目前不知道安卓开发是否可以完成类似功能，且通用。
 
-[插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，现在可以前往AstroBox的插件市场下载插件『Vela快应用验证』，即可使用插件。
+[插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，现在可以前往AstroBox的插件市场下载插件`Vela快应用验证`，即可使用插件。
 
 ![插件界面截图](/image/VelaVerify-Plugin-interface.png)
 
