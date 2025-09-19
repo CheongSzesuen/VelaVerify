@@ -207,11 +207,11 @@ setTimeout(() => {
 ```
 5.在发版的时候将文件夹里的`app.ux`替换到你的项目。
 ### 验证网站前端
-我提供[我的验证网站](https://verify.waijade.cn)的代码我使用的是Vue搭建的前端，使用Vue Bits组件库。
+我提供[我的验证网站](https://verify.waijade.cn)的代码，我使用的是Vue框架，使用Vue Bits组件库。
 
 ### 验证网站后端
 #### 1.创建Worker
-在侧栏里打开`计算（Worker）`，点击`创建`，点击`从Hello World开始!`，修改你的worker名称，比如：`veirfy`，然后点击`部署`，点击`编辑代码`，然后把左侧已有的代码全部删除，然后将文件夹里的`worker.js`复制进去。
+在Cloudflare的控制台侧栏里打开`计算（Worker）`，点击`创建`，点击`从Hello World开始!`，修改你的worker名称，比如：`veirfy`，然后点击`部署`，点击`编辑代码`，然后把左侧已有的代码全部删除，然后将文件夹里的`worker.js`复制进去。
 #### 2.修改`worker.js`数据
 ##### 1)把刚才生成的`cards.js`的内容替换到这里
 ```js
@@ -234,7 +234,7 @@ async function handleRequest(request) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 ```
-包含协议，比如`https://verify.waijade.cn`，开发阶段可以将这里填为`*`，等前端一旦建好马上改为你前端的网址
+包含协议，比如`https://verify.waijade.cn`，开发阶段可以将这里填为`*`，等前端一旦部署完成必须马上改为你前端的网址，防止被爆刷worker。
 ##### 3)把生成的RSA密钥的密钥部分替换到这里
 ```js
 // RSA 私钥（PEM 格式）
@@ -242,9 +242,9 @@ const RSA_PRIVATE_KEY = `填入你自己的私钥`;
 ```
 >包含PEM的头和尾，如：`-----BEGIN PRIVATE KEY-----`和`-----END PRIVATE KEY-----`
 #### 3.创建KV存储空间
-在侧栏里打开`存储和数据库`右侧的倒三角，点击`KV`，点击`Create Instance`，`输入命名空间的名字`（需要你自己能看出来这是干什么的KV，不会用于代码）。
+KV命名空间是用来做`已经使用过的卡密数据库`的，用来防止卡密被重复使用。在侧栏里打开`存储和数据库`右侧的倒三角，点击`KV`，点击`Create Instance`，`输入命名空间的名字`（需要你自己能看出来这是干什么的KV，这个名字无要求）。
 #### 4.绑定KV存储空间到Worker
-KV命名空间是用来做`已经使用过的卡密数据库`的，用来防止卡密被重复使用。进入你的worker项目，进入`绑定`，`添加绑定`，`KV命名空间`，`添加绑定`，`变量名称`输入`cards_used`。
+进入你的worker项目，进入`绑定`，`添加绑定`，`KV命名空间`，`添加绑定`，`变量名称`输入`cards_used`。
 #### 5.点击部署
 ### 注意事项
 #### 数据格式
@@ -307,7 +307,7 @@ python tool.py
 ```
 发送给用户的数据应该形如`设备ID:随机6位激活码:签名结果`
 #### 插件说明
-我开发了AstroBox的插件部分，由于安卓开发从来没玩过，放弃软件方式。而且软件需要两边签名相同，所以无法做到通用。
+我开发了AstroBox的插件部分，目前不知道安卓开发是否可以完成类似功能，且通用。
 
 [插件开源地址](https://github.com/CheongSzesuen/VelaVerify-AstroBox-Plugin)，现在可以前往AstroBox的插件市场下载插件『Vela快应用验证』，即可使用插件。
 
